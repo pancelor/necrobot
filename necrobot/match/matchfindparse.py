@@ -4,6 +4,7 @@ from typing import Optional
 
 import pytz
 
+import match.match
 import necrobot.exception
 from necrobot.match import matchdb
 from necrobot.match import matchutil
@@ -73,4 +74,4 @@ async def find_match(
             "Can't find any match between `{0}` and `{1}`.".format(racer_1.display_name, racer_2.display_name)
         )
 
-    return await matchutil.get_match_from_id(match_id)
+    return await match.match.get_match_from_id(match_id)

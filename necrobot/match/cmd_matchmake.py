@@ -1,8 +1,11 @@
 from typing import List, Optional, Union
 import discord
+
+import match.match
 import necrobot.exception
 from necrobot.botbase.command import Command
-from necrobot.match import matchinfo, matchutil
+from necrobot.match import match
+from necrobot.match import matchinfo
 from necrobot.match import matchchannelutil
 from necrobot.user import userlib
 
@@ -53,12 +56,12 @@ async def make_match_from_cmd(
 
     # Check for duplicating match
     if not allow_duplicates:
-        duplicate = await matchutil.match_exists_between(racers[0], racers[1])
+        duplicate = await match.match_exists_between(racers[0], racers[1])
         if duplicate:
             raise necrobot.exception.DuplicateMatchException()
 
     # Create the Match object
-    new_match = await matchutil.make_match(
+    new_match = await match.make_match(
         racer_1_id=racers[0].user_id,
         racer_2_id=racers[1].user_id,
         match_info=match_info,

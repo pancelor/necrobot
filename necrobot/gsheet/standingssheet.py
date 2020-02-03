@@ -3,6 +3,7 @@ import datetime
 import typing
 import unittest
 
+import match.match
 from necrobot.match.matchgsheetinfo import MatchGSheetInfo
 from necrobot.gsheet.makerequest import make_request
 from necrobot.gsheet.spreadsheets import Spreadsheets
@@ -229,7 +230,7 @@ class TestStandingsSheet(unittest.TestCase):
         cawmentator_id = cawmentator.discord_id if cawmentator is not None else None
 
         match_info = MatchInfo(ranked=True)
-        return await matchutil.make_match(
+        return await match.match.make_match(
             racer_1_id=racer_1.user_id,
             racer_2_id=racer_2.user_id,
             match_info=match_info,

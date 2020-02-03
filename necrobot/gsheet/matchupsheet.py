@@ -5,6 +5,7 @@ import unittest
 
 import pytz
 
+import match.match
 import necrobot.exception
 from necrobot.gsheet.sheetrange import SheetRange
 from necrobot.match.matchgsheetinfo import MatchGSheetInfo
@@ -206,7 +207,7 @@ class MatchupSheet(object):
                     except IndexError:
                         pass
 
-                new_match = await matchutil.make_match(
+                new_match = await match.match.make_match(
                     update=True,
                     match_id=match_id,
                     racer_1_id=racer_1.user_id,

@@ -1,6 +1,7 @@
 import discord
 from typing import List
 
+import match.match
 from necrobot.botbase.necrobot import Necrobot
 from necrobot.match import matchdb
 from necrobot.match.match import Match
@@ -66,7 +67,7 @@ async def get_matches_with_channels(racer: NecroUser = None) -> list:
         channel_id = int(row[13])
         channel = server.find_channel(channel_id=channel_id)
         if channel is not None:
-            match = await matchutil.make_match_from_raw_db_data(row=row)
+            match = await match.match.make_match_from_raw_db_data(row=row)
             matches.append(match)
         else:
             console.warning('Found Match with channel {0}, but couldn\'t find this channel.'.format(channel_id))

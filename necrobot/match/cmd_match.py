@@ -6,8 +6,10 @@ import necrobot.exception
 from necrobot.botbase.command import Command
 from necrobot.botbase.commandtype import CommandType
 from necrobot.botbase.necroevent import NEDispatch
-from necrobot.match import matchdb, matchfindparse
+from necrobot.match import matchfindparse
+from match.match import MatchDBWriter
 from necrobot.match.matchglobals import MatchGlobals
+from necrobot.league.leaguemgr import LeagueMgr
 from necrobot.user import userlib
 from necrobot.util import console, timestr, writechannel
 from necrobot.util.parse import dateparse
@@ -59,6 +61,11 @@ class Vod(CommandType):
             )
             return
 
+        # Attempt to parse first argument as a league
+        subleague_name = cmd.args[0]
+        if not LeagueMgr().is_subleague(subleague_name):
+            subleague_name = None
+
         url = cmd.args[len(cmd.args) - 1]
         cmd.args.pop(len(cmd.args) - 1)
         arg_string = ''
@@ -81,7 +88,7 @@ class Vod(CommandType):
             )
             return
 
-        await matchdb.add_vod(match=match, vodlink=url)
+        await MatchDBWriter(schema_name=subleague_name).add_vod(match=match, vodlink=url)
         await NEDispatch().publish(event_type='set_vod', match=match, url=url)
         await cmd.channel.send(
             'Added a vod for the match {0}.'.format(match.matchroom_name)

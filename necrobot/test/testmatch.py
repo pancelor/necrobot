@@ -1,4 +1,6 @@
 import datetime
+
+import match.match
 from necrobot.match.match import Match
 from necrobot.match.matchinfo import MatchInfo
 from necrobot.match import matchutil
@@ -17,7 +19,7 @@ async def get_match(
     cawmentator_id = cawmentator.user_id if cawmentator is not None else None
 
     match_info = MatchInfo(ranked=True)
-    return await matchutil.make_match(
+    return await match.match.make_match(
         racer_1_id=racer_1.user_id,
         racer_2_id=racer_2.user_id,
         match_info=match_info,

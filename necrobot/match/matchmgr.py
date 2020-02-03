@@ -1,4 +1,6 @@
 import asyncio
+
+import match.match
 from necrobot.botbase.necroevent import NEDispatch, NecroEvent
 from necrobot.botbase.manager import Manager
 from necrobot.botbase.necrobot import Necrobot
@@ -53,7 +55,7 @@ class MatchMgr(Manager, metaclass=Singleton):
             channel_id = int(row[13])
             channel = server.find_channel(channel_id=channel_id)
             if channel is not None:
-                match = await matchutil.make_match_from_raw_db_data(row=row)
+                match = await match.match.make_match_from_raw_db_data(row=row)
                 new_room = MatchRoom(match_discord_channel=channel, match=match)
                 Necrobot().register_bot_channel(channel, new_room)
                 await new_room.initialize()

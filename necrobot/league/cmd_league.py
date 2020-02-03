@@ -2,6 +2,7 @@ import datetime
 import os
 import pytz
 
+import match.match
 import necrobot.exception
 from necrobot.botbase.command import Command
 from necrobot.botbase.commandtype import CommandType
@@ -9,7 +10,7 @@ from necrobot.botbase.necroevent import NEDispatch
 from necrobot.config import Config
 from necrobot.league.leaguedb import LeagueDBWriter
 from necrobot.league.leaguemgr import LeagueMgr
-from necrobot.match import matchutil, cmd_matchmake, matchinfo, matchdb, matchchannelutil
+from necrobot.match import cmd_matchmake, match, matchinfo, matchdb, matchchannelutil
 from necrobot.user import userlib
 from necrobot.util import server
 from necrobot.util.parse import dateparse
@@ -24,7 +25,7 @@ class ScrubDatabase(CommandType):
 
     async def _do_execute(self, cmd: Command):
         await matchdb.scrub_unchanneled_unraced_matches()
-        matchutil.invalidate_cache()
+        match.invalidate_cache()
         await cmd.channel.send(
             'Database scrubbed.'
         )
@@ -144,7 +145,7 @@ class DropRacer(CommandType):
             channel = server.find_channel(channel_id=the_match.channel_id)
             if channel is not None:
                 await channel.delete()
-                await matchutil.delete_match(match_id=the_match.match_id)
+                await match.match.delete_match(match_id=the_match.match_id)
                 deleted_any = True
 
         if deleted_any:
@@ -345,7 +346,7 @@ class MakeMatchesFromFile(CommandType):
                     not_found_matches.append('`{0}`-`{1}`'.format(racers[0], racers[1]))
                     return
 
-                new_match = await matchutil.make_match(
+                new_match = await match.make_match(
                     register=True,
                     racer_1_id=racer_1.user_id,
                     racer_2_id=racer_2.user_id,
@@ -404,7 +405,7 @@ class NextRace(CommandType):
         utcnow = pytz.utc.localize(datetime.datetime.utcnow())
         num_to_show = 3
 
-        matches = await matchutil.get_upcoming_and_current()
+        matches = await match.get_upcoming_and_current()
         if not matches:
             await cmd.channel.send(
                 'Didn\'t find any scheduled matches!')
@@ -421,7 +422,7 @@ class NextRace(CommandType):
             upcoming_matches = matches
 
         await cmd.channel.send(
-            await matchutil.get_nextrace_displaytext(upcoming_matches)
+            await match.match.get_nextrace_displaytext(upcoming_matches)
         )
 
 

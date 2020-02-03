@@ -1,6 +1,7 @@
 import asyncio
 import unittest
 
+import match.match
 from necrobot.botbase.necroevent import NEDispatch, NecroEvent
 from necrobot.botbase.manager import Manager
 from necrobot.config import Config
@@ -201,7 +202,7 @@ class CondorMgr(Manager, metaclass=Singleton):
         )
 
     async def update_schedule_channel(self):
-        infotext = await matchutil.get_schedule_infotext()
+        infotext = await match.match.get_schedule_infotext()
 
         # Find the message:
         the_msg = None

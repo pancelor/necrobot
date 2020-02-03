@@ -27,6 +27,9 @@ class LeagueMgr(Manager, metaclass=Singleton):
     def sub_league(self, league_name) -> Optional[League]:
         return self._sub_leagues[league_name] if league_name in self._sub_leagues else None
 
+    def is_subleague(self, league_name) -> bool:
+        return league_name in self._sub_leagues or league_name == self._the_league.schema_name
+
     async def initialize(self):
         if Config.LEAGUE_NAME:
             try:

@@ -1,5 +1,6 @@
 import googleapiclient.errors
 
+import match.match
 import necrobot.exception
 
 from necrobot.util import console
@@ -191,7 +192,7 @@ class PushMatchToSheet(CommandType):
         if match.is_scheduled:
             await matchup_sheet.schedule_match(match)
         await matchup_sheet.set_cawmentary(match)
-        match_race_data = await matchutil.get_race_data(match)    # type: MatchRaceData
+        match_race_data = await match.match.get_race_data(match)    # type: MatchRaceData
 
         if match.is_best_of:
             played_all = match_race_data.leader_wins > match.number_of_races // 2
