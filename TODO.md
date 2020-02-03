@@ -2,6 +2,10 @@
 
 Current version: 0.13
 
+## Season 9
+
+- Calls to the database, to find which schema to look in, need to go through LeagueMgr
+
 ## Current TODO
 
 ### General

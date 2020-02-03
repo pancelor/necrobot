@@ -2,12 +2,10 @@ data/*
 ignore/
 tmp/
 venv/
+.idea/
 *.db
 *.pyc
 *.log
 *.xml
 *.sql
-.idea/necrobot.iml
-ratelimittest.py
-ilp_test.txt
 *.mps

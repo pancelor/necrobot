@@ -7,7 +7,7 @@ from necrobot.botbase.command import Command
 from necrobot.botbase.commandtype import CommandType
 from necrobot.botbase.necroevent import NEDispatch
 from necrobot.config import Config
-from necrobot.league import leaguedb
+from necrobot.league.leaguedb import LeagueDBWriter
 from necrobot.league.leaguemgr import LeagueMgr
 from necrobot.match import matchutil, cmd_matchmake, matchinfo, matchdb, matchchannelutil
 from necrobot.user import userlib
@@ -432,7 +432,14 @@ class Register(CommandType):
 
     async def _do_execute(self, cmd: Command):
         user = await userlib.get_user(discord_id=int(cmd.author.id))
-        await leaguedb.register_user(user.user_id)
+        league = LeagueMgr().league
+        if league is None:
+            await cmd.channel.send(
+                'Error: Cannot register, because there is no active league.'
+            )
+            return
+
+        await LeagueDBWriter(schema_name=league.schema_name).register_user(user.user_id)
 
 
 class RegisterCondorEvent(CommandType):
